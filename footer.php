@@ -1,23 +1,22 @@
 <?php
 /**
- * The template for displaying the footer.
- *
- * Contains the closing of the #content div and all content after
- *
- * @package EDD Starter Theme
+ * the closing of the main content elements and the footer element
  */
 ?>
 
-	</div><!-- #content -->
+			</div>
+		</div>
+	</div>
 
-	<footer id="colophon" class="site-footer" role="contentinfo">
-		<div class="site-info">
-			<a href="<?php echo esc_url( __( 'http://wordpress.org/', 'edd_starter' ) ); ?>"><?php printf( __( 'Proudly powered by %s', 'edd_starter' ), 'WordPress' ); ?></a>
-			<span class="sep"> | </span>
-			<?php printf( __( 'Theme: %1$s by %2$s.', 'edd_starter' ), 'EDD Starter Theme', '<a href="http://seandavis.co/" rel="designer">Sean Davis</a>' ); ?>
-		</div><!-- .site-info -->
-	</footer><!-- #colophon -->
-</div><!-- #page -->
+	<div class="footer-area full">
+		<div class="main">
+			<footer id="colophon" class="site-footer inner" role="contentinfo">
+				<span class="site-info">
+					<?php echo get_theme_mod( 'shoppette_credits_copyright', get_bloginfo( 'description' ) . ' &copy; ' . date( 'Y' ) ); ?>
+				</span>
+			</footer>
+		</div>
+	</div>
 
 <?php wp_footer(); ?>
 

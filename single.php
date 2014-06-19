@@ -1,8 +1,6 @@
 <?php
 /**
  * The Template for displaying all single posts.
- *
- * @package EDD Starter Theme
  */
 
 get_header(); ?>
@@ -12,9 +10,9 @@ get_header(); ?>
 
 		<?php while ( have_posts() ) : the_post(); ?>
 
-			<?php get_template_part( 'content', 'single' ); ?>
+			<?php get_template_part( 'content/content', 'single' ); ?>
 
-			<?php edd_starter_post_nav(); ?>
+			<?php sdm_post_nav(); ?>
 
 			<?php
 				// If comments are open or we have at least one comment, load up the comment template
@@ -25,8 +23,8 @@ get_header(); ?>
 
 		<?php endwhile; // end of the loop. ?>
 
-		</main><!-- #main -->
-	</div><!-- #primary -->
+		</main>
+	</div>
 
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>

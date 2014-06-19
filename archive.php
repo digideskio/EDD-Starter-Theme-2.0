@@ -1,10 +1,6 @@
 <?php
 /**
  * The template for displaying Archive pages.
- *
- * Learn more: http://codex.wordpress.org/Template_Hierarchy
- *
- * @package EDD Starter Theme
  */
 
 get_header(); ?>
@@ -24,46 +20,46 @@ get_header(); ?>
 							single_tag_title();
 
 						elseif ( is_author() ) :
-							printf( __( 'Author: %s', 'edd_starter' ), '<span class="vcard">' . get_the_author() . '</span>' );
+							printf( __( 'Author: %s', 'sdm' ), '<span class="vcard">' . get_the_author() . '</span>' );
 
 						elseif ( is_day() ) :
-							printf( __( 'Day: %s', 'edd_starter' ), '<span>' . get_the_date() . '</span>' );
+							printf( __( 'Day: %s', 'sdm' ), '<span>' . get_the_date() . '</span>' );
 
 						elseif ( is_month() ) :
-							printf( __( 'Month: %s', 'edd_starter' ), '<span>' . get_the_date( _x( 'F Y', 'monthly archives date format', 'edd_starter' ) ) . '</span>' );
+							printf( __( 'Month: %s', 'sdm' ), '<span>' . get_the_date( _x( 'F Y', 'monthly archives date format', 'sdm' ) ) . '</span>' );
 
 						elseif ( is_year() ) :
-							printf( __( 'Year: %s', 'edd_starter' ), '<span>' . get_the_date( _x( 'Y', 'yearly archives date format', 'edd_starter' ) ) . '</span>' );
+							printf( __( 'Year: %s', 'sdm' ), '<span>' . get_the_date( _x( 'Y', 'yearly archives date format', 'sdm' ) ) . '</span>' );
 
 						elseif ( is_tax( 'post_format', 'post-format-aside' ) ) :
-							_e( 'Asides', 'edd_starter' );
+							_e( 'Asides', 'sdm' );
 
 						elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) :
-							_e( 'Galleries', 'edd_starter');
+							_e( 'Galleries', 'sdm');
 
 						elseif ( is_tax( 'post_format', 'post-format-image' ) ) :
-							_e( 'Images', 'edd_starter');
+							_e( 'Images', 'sdm');
 
 						elseif ( is_tax( 'post_format', 'post-format-video' ) ) :
-							_e( 'Videos', 'edd_starter' );
+							_e( 'Videos', 'sdm' );
 
 						elseif ( is_tax( 'post_format', 'post-format-quote' ) ) :
-							_e( 'Quotes', 'edd_starter' );
+							_e( 'Quotes', 'sdm' );
 
 						elseif ( is_tax( 'post_format', 'post-format-link' ) ) :
-							_e( 'Links', 'edd_starter' );
+							_e( 'Links', 'sdm' );
 
 						elseif ( is_tax( 'post_format', 'post-format-status' ) ) :
-							_e( 'Statuses', 'edd_starter' );
+							_e( 'Statuses', 'sdm' );
 
 						elseif ( is_tax( 'post_format', 'post-format-audio' ) ) :
-							_e( 'Audios', 'edd_starter' );
+							_e( 'Audios', 'sdm' );
 
 						elseif ( is_tax( 'post_format', 'post-format-chat' ) ) :
-							_e( 'Chats', 'edd_starter' );
+							_e( 'Chats', 'sdm' );
 
 						else :
-							_e( 'Archives', 'edd_starter' );
+							_e( 'Archives', 'sdm' );
 
 						endif;
 					?>
@@ -75,7 +71,7 @@ get_header(); ?>
 						printf( '<div class="taxonomy-description">%s</div>', $term_description );
 					endif;
 				?>
-			</header><!-- .page-header -->
+			</header>
 
 			<?php /* Start the Loop */ ?>
 			<?php while ( have_posts() ) : the_post(); ?>
@@ -85,21 +81,21 @@ get_header(); ?>
 					 * If you want to override this in a child theme, then include a file
 					 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
 					 */
-					get_template_part( 'content', get_post_format() );
+					get_template_part( 'content/content', get_post_format() );
 				?>
 
 			<?php endwhile; ?>
 
-			<?php edd_starter_paging_nav(); ?>
+			<?php sdm_paging_nav(); ?>
 
 		<?php else : ?>
 
-			<?php get_template_part( 'content', 'none' ); ?>
+			<?php get_template_part( 'content/content', 'none' ); ?>
 
 		<?php endif; ?>
 
-		</main><!-- #main -->
-	</section><!-- #primary -->
+		</main>
+	</section>
 
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>

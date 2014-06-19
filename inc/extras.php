@@ -3,21 +3,7 @@
  * Custom functions that act independently of the theme templates
  *
  * Eventually, some of the functionality here could be replaced by core features
- *
- * @package EDD Starter Theme
  */
-
-/**
- * Get our wp_nav_menu() fallback, wp_page_menu(), to show a home link.
- *
- * @param array $args Configuration arguments.
- * @return array
- */
-function edd_starter_page_menu_args( $args ) {
-	$args['show_home'] = true;
-	return $args;
-}
-add_filter( 'wp_page_menu_args', 'edd_starter_page_menu_args' );
 
 /**
  * Adds custom classes to the array of body classes.
@@ -25,15 +11,29 @@ add_filter( 'wp_page_menu_args', 'edd_starter_page_menu_args' );
  * @param array $classes Classes for the body element.
  * @return array
  */
-function edd_starter_body_classes( $classes ) {
+function sdm_body_classes( $classes ) {
 	// Adds a class of group-blog to blogs with more than 1 published author.
 	if ( is_multi_author() ) {
 		$classes[] = 'group-blog';
 	}
+	
+	if ( is_page_template( 'edd_templates/edd-store-front.php' ) ) {		
+		$classes[] = 'edd-store-front-template';
+	} elseif ( is_page_template( 'edd_templates/edd-checkout.php' ) ) {		
+		$classes[] = 'edd-checkout-template';	
+	} elseif ( is_page_template( 'edd_templates/edd-confirmation.php' ) ) {		
+		$classes[] = 'edd-confirmation-template';
+	} elseif ( is_page_template( 'edd_templates/edd-history.php' ) ) {		
+		$classes[] = 'edd-history-template';
+	} elseif ( is_page_template( 'edd_templates/edd-members.php' ) ) {		
+		$classes[] = 'edd-members-template';
+	} elseif ( is_page_template( 'edd_templates/edd-failed.php' ) ) {	
+		$classes[] = 'edd-failed-template';				
+	}
 
 	return $classes;
 }
-add_filter( 'body_class', 'edd_starter_body_classes' );
+add_filter( 'body_class', 'sdm_body_classes' );
 
 /**
  * Filters wp_title to print a neat <title> tag based on what is being viewed.
@@ -42,11 +42,11 @@ add_filter( 'body_class', 'edd_starter_body_classes' );
  * @param string $sep Optional separator.
  * @return string The filtered title.
  */
-function edd_starter_wp_title( $title, $sep ) {
+function sdm_wp_title( $title, $sep ) {
 	if ( is_feed() ) {
 		return $title;
 	}
-
+	
 	global $page, $paged;
 
 	// Add the blog name
@@ -59,13 +59,13 @@ function edd_starter_wp_title( $title, $sep ) {
 	}
 
 	// Add a page number if necessary:
-	if ( ( $paged >= 2 || $page >= 2 ) && ! is_404() ) {
-		$title .= " $sep " . sprintf( __( 'Page %s', 'edd_starter' ), max( $paged, $page ) );
+	if ( $paged >= 2 || $page >= 2 ) {
+		$title .= " $sep " . sprintf( __( 'Page %s', 'sdm' ), max( $paged, $page ) );
 	}
 
 	return $title;
 }
-add_filter( 'wp_title', 'edd_starter_wp_title', 10, 2 );
+add_filter( 'wp_title', 'sdm_wp_title', 10, 2 );
 
 /**
  * Sets the authordata global when viewing an author archive.
@@ -79,11 +79,11 @@ add_filter( 'wp_title', 'edd_starter_wp_title', 10, 2 );
  * @global WP_Query $wp_query WordPress Query object.
  * @return void
  */
-function edd_starter_setup_author() {
+function sdm_setup_author() {
 	global $wp_query;
 
 	if ( $wp_query->is_author() && isset( $wp_query->post ) ) {
 		$GLOBALS['authordata'] = get_userdata( $wp_query->post->post_author );
 	}
 }
-add_action( 'wp', 'edd_starter_setup_author' );
+add_action( 'wp', 'sdm_setup_author' );

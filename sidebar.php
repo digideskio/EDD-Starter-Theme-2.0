@@ -1,8 +1,6 @@
 <?php
 /**
  * The Sidebar containing the main widget areas.
- *
- * @package EDD Starter Theme
  */
 ?>
 	<div id="secondary" class="widget-area" role="complementary">
@@ -13,14 +11,14 @@
 			</aside>
 
 			<aside id="archives" class="widget">
-				<h1 class="widget-title"><?php _e( 'Archives', 'edd_starter' ); ?></h1>
+				<h4 class="widget-title"><?php _e( 'Archives', 'sdm' ); ?></h4>
 				<ul>
 					<?php wp_get_archives( array( 'type' => 'monthly' ) ); ?>
 				</ul>
 			</aside>
 
 			<aside id="meta" class="widget">
-				<h1 class="widget-title"><?php _e( 'Meta', 'edd_starter' ); ?></h1>
+				<h4 class="widget-title"><?php _e( 'Meta', 'sdm' ); ?></h4>
 				<ul>
 					<?php wp_register(); ?>
 					<li><?php wp_loginout(); ?></li>
@@ -29,4 +27,4 @@
 			</aside>
 
 		<?php endif; // end sidebar widget area ?>
-	</div><!-- #secondary -->
+	</div>

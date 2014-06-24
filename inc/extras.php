@@ -1,9 +1,8 @@
 <?php
 /**
  * Custom functions that act independently of the theme templates
- *
- * Eventually, some of the functionality here could be replaced by core features
  */
+
 
 /**
  * Adds custom classes to the array of body classes.
@@ -11,7 +10,7 @@
  * @param array $classes Classes for the body element.
  * @return array
  */
-function sdm_body_classes( $classes ) {
+function edds_body_classes( $classes ) {
 	// Adds a class of group-blog to blogs with more than 1 published author.
 	if ( is_multi_author() ) {
 		$classes[] = 'group-blog';
@@ -33,7 +32,8 @@ function sdm_body_classes( $classes ) {
 
 	return $classes;
 }
-add_filter( 'body_class', 'sdm_body_classes' );
+add_filter( 'body_class', 'edds_body_classes' );
+
 
 /**
  * Filters wp_title to print a neat <title> tag based on what is being viewed.
@@ -42,7 +42,7 @@ add_filter( 'body_class', 'sdm_body_classes' );
  * @param string $sep Optional separator.
  * @return string The filtered title.
  */
-function sdm_wp_title( $title, $sep ) {
+function edds_wp_title( $title, $sep ) {
 	if ( is_feed() ) {
 		return $title;
 	}
@@ -60,12 +60,13 @@ function sdm_wp_title( $title, $sep ) {
 
 	// Add a page number if necessary:
 	if ( $paged >= 2 || $page >= 2 ) {
-		$title .= " $sep " . sprintf( __( 'Page %s', 'sdm' ), max( $paged, $page ) );
+		$title .= " $sep " . sprintf( __( 'Page %s', 'edds' ), max( $paged, $page ) );
 	}
 
 	return $title;
 }
-add_filter( 'wp_title', 'sdm_wp_title', 10, 2 );
+add_filter( 'wp_title', 'edds_wp_title', 10, 2 );
+
 
 /**
  * Sets the authordata global when viewing an author archive.
@@ -79,11 +80,84 @@ add_filter( 'wp_title', 'sdm_wp_title', 10, 2 );
  * @global WP_Query $wp_query WordPress Query object.
  * @return void
  */
-function sdm_setup_author() {
+function edds_setup_author() {
 	global $wp_query;
 
 	if ( $wp_query->is_author() && isset( $wp_query->post ) ) {
 		$GLOBALS['authordata'] = get_userdata( $wp_query->post->post_author );
 	}
 }
-add_action( 'wp', 'sdm_setup_author' );
+add_action( 'wp', 'edds_setup_author' );
+
+
+if ( !function_exists( 'edds_comment_template' ) ) :
+/**
+ * Used as a custom callback by wp_list_comments() for displaying
+ * the comments and pings.
+ */
+function edds_comment_template( $comment, $args, $depth ) {
+	$GLOBALS['comment'] = $comment;
+	$avatar_size = apply_filters( 'avatar_size', 48 );
+
+	switch ( $comment->comment_type ) {
+
+		// Pings format
+		case 'pingback' :
+		case 'trackback' : ?>
+			<div class="pingback">
+				<span>
+					<?php
+						echo __( 'Pingback: ', 'edds'),
+						comment_author_link(),
+						edit_comment_link( __(' (Edit) ', 'edds') ); 
+					?>
+				</span>
+			<?php 
+			break;
+
+		// Comments format	
+		default : ?>
+			<div <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
+				<article id="comment-<?php comment_ID(); ?>" class="comment-full">
+					<footer class="comment-footer">
+						<div class="comment-author vcard">
+							<div class="comment-avatar">
+								<?php echo get_avatar( $comment, $avatar_size ); ?>
+							</div>
+						</div>
+						<?php
+							if ( $comment->comment_approved == '0' ) : ?>
+								<em><?php _e( 'Your comment is awaiting moderation.', 'edds' ); ?></em><br /> 
+								<?php
+							endif;
+						?>
+						<div class="comment-meta commentmetadata">
+							<cite class="fn"><?php echo __( 'by ', 'edds' ) . get_comment_author_link(); ?></cite>
+							<span class="comment-date">
+								<a href="<?php echo esc_url( get_comment_link( $comment->comment_ID ) ); ?>">
+									<time pubdate datetime="<?php comment_time( 'c' ); ?>"><?php echo get_comment_date(); // translators: 1: date, 2: time ?></time>
+								</a>
+								<?php edit_comment_link( __( ' (Edit) ', 'edds' ) ); ?>
+							</span>
+						</div>
+					</footer>
+					<div class="comment-content"> 
+						<?php comment_text(); ?>
+					</div>
+					<div class="reply">
+						<?php 
+							comment_reply_link(
+								array_merge( $args, array(
+									'reply_text'	=> __( 'Reply', 'edds' ),
+									'depth'			=> $depth, 
+									'max_depth'		=> $args['max_depth'],
+								) )
+							);
+						?>
+					</div>
+				</article>
+			<?php
+			break;
+	}
+}
+endif;

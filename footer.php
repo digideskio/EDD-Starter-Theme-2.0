@@ -12,13 +12,19 @@
 		<div class="main">
 			<footer id="colophon" class="site-footer inner" role="contentinfo">
 				<span class="site-info">
-					<?php echo get_theme_mod( 'shoppette_credits_copyright', get_bloginfo( 'description' ) . ' &copy; ' . date( 'Y' ) ); ?>
+					<?php 
+						if ( get_theme_mod( 'edds_credits_copyright' ) ) :
+							echo wpautop( get_theme_mod( 'edds_credits_copyright' ) );
+						else : 
+							echo get_bloginfo( 'name' ) . ' &copy; ' . date( 'Y' ) . ' - ' . get_bloginfo( 'description' );
+						endif;
+					?>
 				</span>
 			</footer>
 		</div>
 	</div>
 
-<?php wp_footer(); ?>
+	<?php wp_footer(); ?>
 
 </body>
 </html>

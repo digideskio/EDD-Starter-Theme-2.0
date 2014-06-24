@@ -28,7 +28,7 @@ get_header(); ?>
 
 			<?php endwhile; ?>
 
-			<?php sdm_paging_nav(); ?>
+			<?php edds_paging_nav(); ?>
 
 		<?php else : ?>
 

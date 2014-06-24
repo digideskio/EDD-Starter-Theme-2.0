@@ -20,46 +20,46 @@ get_header(); ?>
 							single_tag_title();
 
 						elseif ( is_author() ) :
-							printf( __( 'Author: %s', 'sdm' ), '<span class="vcard">' . get_the_author() . '</span>' );
+							printf( __( 'Author: %s', 'edds' ), '<span class="vcard">' . get_the_author() . '</span>' );
 
 						elseif ( is_day() ) :
-							printf( __( 'Day: %s', 'sdm' ), '<span>' . get_the_date() . '</span>' );
+							printf( __( 'Day: %s', 'edds' ), '<span>' . get_the_date() . '</span>' );
 
 						elseif ( is_month() ) :
-							printf( __( 'Month: %s', 'sdm' ), '<span>' . get_the_date( _x( 'F Y', 'monthly archives date format', 'sdm' ) ) . '</span>' );
+							printf( __( 'Month: %s', 'edds' ), '<span>' . get_the_date( _x( 'F Y', 'monthly archives date format', 'edds' ) ) . '</span>' );
 
 						elseif ( is_year() ) :
-							printf( __( 'Year: %s', 'sdm' ), '<span>' . get_the_date( _x( 'Y', 'yearly archives date format', 'sdm' ) ) . '</span>' );
+							printf( __( 'Year: %s', 'edds' ), '<span>' . get_the_date( _x( 'Y', 'yearly archives date format', 'edds' ) ) . '</span>' );
 
 						elseif ( is_tax( 'post_format', 'post-format-aside' ) ) :
-							_e( 'Asides', 'sdm' );
+							_e( 'Asides', 'edds' );
 
 						elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) :
-							_e( 'Galleries', 'sdm');
+							_e( 'Galleries', 'edds');
 
 						elseif ( is_tax( 'post_format', 'post-format-image' ) ) :
-							_e( 'Images', 'sdm');
+							_e( 'Images', 'edds');
 
 						elseif ( is_tax( 'post_format', 'post-format-video' ) ) :
-							_e( 'Videos', 'sdm' );
+							_e( 'Videos', 'edds' );
 
 						elseif ( is_tax( 'post_format', 'post-format-quote' ) ) :
-							_e( 'Quotes', 'sdm' );
+							_e( 'Quotes', 'edds' );
 
 						elseif ( is_tax( 'post_format', 'post-format-link' ) ) :
-							_e( 'Links', 'sdm' );
+							_e( 'Links', 'edds' );
 
 						elseif ( is_tax( 'post_format', 'post-format-status' ) ) :
-							_e( 'Statuses', 'sdm' );
+							_e( 'Statuses', 'edds' );
 
 						elseif ( is_tax( 'post_format', 'post-format-audio' ) ) :
-							_e( 'Audios', 'sdm' );
+							_e( 'Audios', 'edds' );
 
 						elseif ( is_tax( 'post_format', 'post-format-chat' ) ) :
-							_e( 'Chats', 'sdm' );
+							_e( 'Chats', 'edds' );
 
 						else :
-							_e( 'Archives', 'sdm' );
+							_e( 'Archives', 'edds' );
 
 						endif;
 					?>
@@ -86,7 +86,7 @@ get_header(); ?>
 
 			<?php endwhile; ?>
 
-			<?php sdm_paging_nav(); ?>
+			<?php edds_paging_nav(); ?>
 
 		<?php else : ?>
 

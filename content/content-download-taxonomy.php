@@ -8,14 +8,14 @@
 
 <div id="store-front">
 <?php if ( have_posts() ) : $i = 1; ?>
-	<?php if ( get_theme_mod( 'sdm_edd_store_archives_title' ) || get_theme_mod( 'sdm_edd_store_archives_description' ) ) : ?>
+	<?php if ( get_theme_mod( 'edds_edd_store_archives_title' ) || get_theme_mod( 'edds_edd_store_archives_description' ) ) : ?>
 		<div class="store-info">
-			<?php if ( get_theme_mod( 'sdm_edd_store_archives_title' ) ) : ?>
-				<h1 class="store-title"><?php echo get_theme_mod( 'sdm_edd_store_archives_title' ); ?></h1>
+			<?php if ( get_theme_mod( 'edds_edd_store_archives_title' ) ) : ?>
+				<h1 class="store-title"><?php echo get_theme_mod( 'edds_edd_store_archives_title' ); ?></h1>
 			<?php endif; ?>
-			<?php if ( get_theme_mod( 'sdm_edd_store_archives_description' ) ) : ?>
+			<?php if ( get_theme_mod( 'edds_edd_store_archives_description' ) ) : ?>
 				<div class="store-description">
-					<?php echo wpautop( get_theme_mod( 'sdm_edd_store_archives_description' ) ); ?>
+					<?php echo wpautop( get_theme_mod( 'edds_edd_store_archives_description' ) ); ?>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -35,13 +35,13 @@
 					<a class="product-title" href="<?php the_permalink(); ?>">
 						<?php the_title( '<h3>', '</h3>' ); ?>
 					</a>
-					<?php if ( get_theme_mod( 'sdm_download_description' ) != 1 ) : // show downloads description? ?>
+					<?php if ( get_theme_mod( 'edds_download_description' ) != 1 ) : // show downloads description & link? ?>
 						<div class="product-info">
 							<?php the_excerpt(); ?>
 						</div>
-					<?php endif; ?>
-					<?php if ( get_theme_mod( 'sdm_product_view_details' ) ) : ?>
-						<a class="view-details" href="<?php the_permalink(); ?>"><?php echo get_theme_mod( 'sdm_product_view_details' ); ?></a>
+						<?php if ( get_theme_mod( 'edds_product_view_details' ) ) : ?>
+							<a class="view-details" href="<?php the_permalink(); ?>"><?php echo get_theme_mod( 'edds_product_view_details' ); ?></a>
+						<?php endif; ?>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -62,8 +62,8 @@
 	</div>
 <?php else : ?>
 
-	<h2 class="center"><?php _e( 'Not Found', 'sdm' ); ?></h2>
-	<p class="center"><?php _e( 'Sorry, but you are looking for something that isn\'t here.', 'sdm' ); ?></p>
+	<h2 class="center"><?php _e( 'Not Found', 'edds' ); ?></h2>
+	<p class="center"><?php _e( 'Sorry, but you are looking for something that isn\'t here.', 'edds' ); ?></p>
 	<?php get_search_form(); ?>
 
 <?php endif; ?>

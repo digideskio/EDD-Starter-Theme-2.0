@@ -23,9 +23,9 @@ $ping = get_bloginfo('pingback_url');
 		<div class="main">
 			<header id="masthead" class="site-header inner" role="banner">
 				<span class="site-title">
-					<?php if ( get_theme_mod( 'sdm_logo' ) ) : ?>
+					<?php if ( get_theme_mod( 'edds_logo' ) ) : ?>
 						<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-							<img src="<?php echo get_theme_mod( 'sdm_logo' ); ?>" alt="<?php echo esc_attr( $title ); ?>">
+							<img src="<?php echo get_theme_mod( 'edds_logo' ); ?>" alt="<?php echo esc_attr( $title ); ?>">
 						</a>
 					<?php else : ?>
 						<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr( $title ); ?>">
@@ -33,19 +33,32 @@ $ping = get_bloginfo('pingback_url');
 						</a>
 					<?php endif; ?>
 				</span>
-				<?php if ( get_theme_mod( 'sdm_hide_tagline' ) != 1 ) : ?>
+				<?php if ( get_theme_mod( 'edds_hide_tagline' ) != 1 ) : ?>
 					<h1 class="site-description"><?php echo $tagline; ?></h1>
 				<?php endif; ?>
-		
-				<nav id="site-navigation" class="main-navigation" role="navigation">
-					<span class="menu-toggle"><?php echo '<i class="fa fa-bars"></i> ' . __( 'Menu', 'sdm' ); ?></span>
-					<a class="skip-link screen-reader-text" href="#content"><?php _e( 'Skip to content', 'sdm' ); ?></a>
-		
-					<?php wp_nav_menu( array( 'theme_location' => 'primary', 'fallback_cb' => false ) ); ?>
-				</nav>
+				
+				<?php if ( has_nav_menu( 'header' ) ) : ?>
+					<nav id="header-navigation" class="header-menu" role="navigation">
+						<?php wp_nav_menu( array( 'theme_location' => 'header', 'fallback_cb' => '__return_false' ) ); ?>
+					</nav>
+				<?php endif; ?>
 			</header>
 		</div>
 	</div>
+
+	<?php if ( has_nav_menu( 'main' ) ) : ?>
+		<div class="main-menu-area full">
+			<div class="main">
+				<div class="main-menu-container inner">
+					<nav id="site-navigation" class="main-navigation clear" role="navigation">
+						<span class="menu-toggle"><?php echo '<i class="fa fa-bars"></i> ' . __( 'Menu', 'edds' ); ?></span>
+						<a class="skip-link screen-reader-text" href="#content"><?php _e( 'Skip to content', 'edds' ); ?></a>
+						<?php wp_nav_menu( array( 'theme_location' => 'main', 'fallback_cb' => '__return_false' ) ); ?>
+					</nav>
+				</div>
+			</div>
+		</div>
+	<?php endif; ?>
 
 	<div class="main-content-area full">
 		<div class="main">

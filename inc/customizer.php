@@ -2,17 +2,20 @@
 /**
  * Theme Customizer
  */
-function sdm_customize_register( $wp_customize ) {
-	
+function edds_customize_register( $wp_customize ) {
+
+
 	/** ===============
-	 * Extends CONTROLS class to add textarea
+	 * Extends controls class to add textarea with description
 	 */
-	class sdm_customize_textarea_control extends WP_Customize_Control {
+	class EDDS_Customize_Textarea_Control extends WP_Customize_Control {
 		public $type = 'textarea';
+		public $description = '';
 		public function render_content() { ?>
 	
 		<label>
 			<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+			<div class="control-description"><?php echo esc_html( $this->description ); ?></div>
 			<textarea rows="5" style="width:98%;" <?php $this->link(); ?>><?php echo esc_textarea( $this->value() ); ?></textarea>
 		</label>
 	
@@ -21,10 +24,28 @@ function sdm_customize_register( $wp_customize ) {
 	
 
 	/** ===============
+	 * Extends controls class to add descriptions to text input controls
+	 */
+	class EDDS_WP_Customize_Text_Control extends WP_Customize_Control {
+		public $type = 'customtext';
+		public $description = '';
+		public function render_content() { ?>
+		
+		<label>
+			<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+			<div class="control-description"><?php echo esc_html( $this->description ); ?></div>
+			<input type="text" value="<?php echo esc_attr( $this->value() ); ?>" <?php $this->link(); ?> />
+		</label>
+		
+		<?php }
+	}
+	
+
+	/** ===============
 	 * Site Title (Logo) & Tagline
 	 */
 	// section adjustments
-	$wp_customize->get_section( 'title_tagline' )->title = __( 'Site Title (Logo) & Tagline', 'sdm' );
+	$wp_customize->get_section( 'title_tagline' )->title = __( 'Site Title (Logo) & Tagline', 'edds' );
 	$wp_customize->get_section( 'title_tagline' )->priority = 10;
 	
 	//site title
@@ -36,20 +57,20 @@ function sdm_customize_register( $wp_customize ) {
 	$wp_customize->get_setting( 'blogdescription' )->transport = 'postMessage';
 	
 	// logo uploader
-	$wp_customize->add_setting( 'sdm_logo', array( 'default' => null ) );
-	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'sdm_logo', array(
-		'label'		=> __( 'Custom Site Logo (replaces title)', 'sdm' ),
+	$wp_customize->add_setting( 'edds_logo', array( 'default' => null ) );
+	$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'edds_logo', array(
+		'label'		=> __( 'Custom Site Logo (replaces title)', 'edds' ),
 		'section'	=> 'title_tagline',
-		'settings'	=> 'sdm_logo',
+		'settings'	=> 'edds_logo',
 		'priority'	=> 20
 	) ) );	
 	// hide the tagline?
-	$wp_customize->add_setting( 'sdm_hide_tagline', array( 
+	$wp_customize->add_setting( 'edds_hide_tagline', array( 
 		'default' => 0,
-		'sanitize_callback' => 'sdm_sanitize_checkbox'  
+		'sanitize_callback' => 'edds_sanitize_checkbox'  
 	) );
-	$wp_customize->add_control( 'sdm_hide_tagline', array(
-		'label'		=> __( 'Hide Tagline', 'sdm' ),
+	$wp_customize->add_control( 'edds_hide_tagline', array(
+		'label'		=> __( 'Hide Tagline', 'edds' ),
 		'section'	=> 'title_tagline',
 		'priority'	=> 40,
 		'type'      => 'checkbox',
@@ -59,95 +80,80 @@ function sdm_customize_register( $wp_customize ) {
 	/** ===============
 	 * Content Options
 	 */
-	$wp_customize->add_section( 'sdm_content_section', array(
-    	'title'       	=> __( 'Content Options', 'sdm' ),
-		'description' 	=> __( 'Adjust the display of content on your website. All options have a default value that can be left as-is but you are free to customize.', 'sdm' ),
+	$wp_customize->add_section( 'edds_content_section', array(
+    	'title'       	=> __( 'Content Options', 'edds' ),
+		'description' 	=> __( 'Adjust the display of content on your website. All options have a default value that can be left as-is but you are free to customize.', 'edds' ),
 		'priority'   	=> 20,
 	) );
 	// post content
-	$wp_customize->add_setting( 'sdm_post_content', array( 
-		'default' => 'full_content',
-		'sanitize_callback' => 'sdm_sanitize_radio'  
+	$wp_customize->add_setting( 'edds_post_content', array( 
+		'default'			=> 0,
+		'sanitize_callback'	=> 'edds_sanitize_checkbox'  
 	) );
-	$wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'sdm_post_content', array(
-		'label'		=> __( 'Post Feed Content', 'sdm' ),
-		'section'	=> 'sdm_content_section',
-		'settings'	=> 'sdm_post_content',
+	$wp_customize->add_control( 'edds_post_content', array(
+		'label'		=> __( 'Display Post Excerpts', 'edds' ),
+		'section'	=> 'edds_content_section',
 		'priority'	=> 10,
-		'type'      => 'radio',
-		'choices'   => array(
-			'excerpt'		=> 'Excerpt',
-			'full_content'	=> 'Full Content'
-		),
-	) ) );
+		'type'      => 'checkbox',
+	) );
 	// read more link
-	$wp_customize->get_setting( 'sdm_read_more' )->transport = 'postMessage';
-	$wp_customize->add_setting( 'sdm_read_more', array(
-		'default' => __( 'Read More &rarr;', 'sdm' ),
-		'sanitize_callback' => 'sdm_sanitize_text' 
+	$wp_customize->get_setting( 'edds_read_more' )->transport = 'postMessage';
+	$wp_customize->add_setting( 'edds_read_more', array(
+		'default' => __( 'Read More &rarr;', 'edds' ),
+		'sanitize_callback' => 'edds_sanitize_text' 
 	) );		
-	$wp_customize->add_control( 'sdm_read_more', array(
-	    'label' 	=> __( 'Excerpt & More Link Text', 'sdm' ),
-	    'section' 	=> 'sdm_content_section',
-		'settings' 	=> 'sdm_read_more',
+	$wp_customize->add_control( new EDDS_WP_Customize_Text_Control( $wp_customize, 'edds_read_more', array(
+	    'label' 	=> __( 'Excerpt & More Link Text', 'edds' ),
+	    'section' 	=> 'edds_content_section',
+		'settings' 	=> 'edds_read_more',
 		'priority'	=> 20,
-	) );
+	) ) );
 	// show featured images on feed?
-	$wp_customize->add_setting( 'sdm_featured_image', array( 
+	$wp_customize->add_setting( 'edds_featured_image', array( 
 		'default' => 1,
-		'sanitize_callback' => 'sdm_sanitize_checkbox'  
+		'sanitize_callback' => 'edds_sanitize_checkbox'  
 	) );
-	$wp_customize->add_control( 'sdm_featured_image', array(
-		'label'		=> __( 'Show Featured Images in post listings?', 'sdm' ),
-		'section'	=> 'sdm_content_section',
+	$wp_customize->add_control( 'edds_featured_image', array(
+		'label'		=> __( 'Show Featured Images in post listings?', 'edds' ),
+		'section'	=> 'edds_content_section',
 		'priority'	=> 30,
 		'type'      => 'checkbox',
 	) );
 	// show featured images on posts?
-	$wp_customize->add_setting( 'sdm_single_featured_image', array( 
+	$wp_customize->add_setting( 'edds_single_featured_image', array( 
 		'default' => 1,
-		'sanitize_callback' => 'sdm_sanitize_checkbox'  
+		'sanitize_callback' => 'edds_sanitize_checkbox'  
 	) );
-	$wp_customize->add_control( 'sdm_single_featured_image', array(
-		'label'		=> __( 'Show Featured Images on Single Posts?', 'sdm' ),
-		'section'	=> 'sdm_content_section',
+	$wp_customize->add_control( 'edds_single_featured_image', array(
+		'label'		=> __( 'Show Featured Images on Single Posts?', 'edds' ),
+		'section'	=> 'edds_content_section',
 		'priority'	=> 40,
 		'type'      => 'checkbox',
 	) );
-	// show single post footer?
-	$wp_customize->add_setting( 'sdm_post_footer', array( 
-		'default' => 1,
-		'sanitize_callback' => 'sdm_sanitize_checkbox'  
+	// comments on pages?
+	$wp_customize->add_setting( 'edds_page_comments', array( 
+		'default' => 0,
+		'sanitize_callback' => 'edds_sanitize_checkbox'  
 	) );
-	$wp_customize->add_control( 'sdm_post_footer', array(
-		'label'		=> __( 'Show Post Footer on Single Posts?', 'sdm' ),
-		'section'	=> 'sdm_content_section',
+	$wp_customize->add_control( 'edds_page_comments', array(
+		'label'		=> __( 'Display Comments on Standard Pages?', 'edds' ),
+		'section'	=> 'edds_content_section',
 		'priority'	=> 50,
 		'type'      => 'checkbox',
 	) );
-	// comments on pages?
-	$wp_customize->add_setting( 'sdm_page_comments', array( 
-		'default' => 0,
-		'sanitize_callback' => 'sdm_sanitize_checkbox'  
-	) );
-	$wp_customize->add_control( 'sdm_page_comments', array(
-		'label'		=> __( 'Display Comments on Standard Pages?', 'sdm' ),
-		'section'	=> 'sdm_content_section',
-		'priority'	=> 60,
-		'type'      => 'checkbox',
-	) );
 	// credits & copyright
-	$wp_customize->get_setting( 'sdm_credits_copyright' )->transport = 'postMessage';
-	$wp_customize->add_setting( 'sdm_credits_copyright', array( 
+	$wp_customize->get_setting( 'edds_credits_copyright' )->transport = 'postMessage';
+	$wp_customize->add_setting( 'edds_credits_copyright', array( 
 		'default' => null,
-		'sanitize_callback' => 'sdm_sanitize_text' 
+		'sanitize_callback'	=> 'edds_sanitize_textarea',
 	) );
-	$wp_customize->add_control( 'sdm_credits_copyright', array(
-		'label'		=> __( 'Footer Credits & Copyright', 'sdm' ),
-		'section'	=> 'sdm_content_section',
-		'settings'	=> 'sdm_credits_copyright',
-		'priority'	=> 70,
-	) );
+	$wp_customize->add_control( new EDDS_Customize_Textarea_Control( $wp_customize, 'edds_credits_copyright', array(
+		'label'		=> __( 'Footer Credits & Copyright', 'edds' ),
+		'section'	=> 'edds_content_section',
+		'settings'	=> 'edds_credits_copyright',
+		'priority'	=> 60,
+		'description'	=> __( 'Displays tagline, site title, copyright, and year by default. Allowed tags: <img>, <a>, <div>, <span>, <blockquote>, <p>, <em>, <strong>, <form>, <input>, <br>, <s>, <i>, <b>', 'edds' ),
+	) ) );
 	
 	
 	/** ===============
@@ -155,73 +161,75 @@ function sdm_customize_register( $wp_customize ) {
 	 */
 	// only if EDD is activated
 	if ( class_exists( 'Easy_Digital_Downloads' ) ) {
-		$wp_customize->add_section( 'sdm_edd_options', array(
-	    	'title'       	=> __( 'Easy Digital Downloads', 'sdm' ),
-			'description' 	=> __( 'All other EDD options are under Dashboard => Downloads. If you deactivate EDD, these options will no longer appear.', 'sdm' ),
+		$wp_customize->add_section( 'edds_edd_options', array(
+	    	'title'       	=> __( 'Easy Digital Downloads', 'edds' ),
+			'description' 	=> __( 'All other EDD options are under Dashboard => Downloads. If you deactivate EDD, these options will no longer appear.', 'edds' ),
 			'priority'   	=> 30,
 		) );
 		// show comments on downloads?
-		$wp_customize->add_setting( 'sdm_download_comments', array( 
+		$wp_customize->add_setting( 'edds_download_comments', array( 
 			'default' => 0,
-			'sanitize_callback' => 'sdm_sanitize_checkbox'  
+			'sanitize_callback' => 'edds_sanitize_checkbox'  
 		) );
-		$wp_customize->add_control( 'sdm_download_comments', array(
-			'label'		=> __( 'Comments on Downloads?', 'sdm' ),
-			'section'	=> 'sdm_edd_options',
+		$wp_customize->add_control( 'edds_download_comments', array(
+			'label'		=> __( 'Comments on Downloads?', 'edds' ),
+			'section'	=> 'edds_edd_options',
 			'priority'	=> 10,
 			'type'      => 'checkbox',
 		) );
 		// store front/downloads archive headline
-		$wp_customize->get_setting( 'sdm_edd_store_archives_title' )->transport = 'postMessage';
-		$wp_customize->add_setting( 'sdm_edd_store_archives_title', array( 
+		$wp_customize->get_setting( 'edds_edd_store_archives_title' )->transport = 'postMessage';
+		$wp_customize->add_setting( 'edds_edd_store_archives_title', array( 
 			'default' => null,
-			'sanitize_callback' => 'sdm_sanitize_text' 
+			'sanitize_callback' => 'edds_sanitize_text' 
 		) );
-		$wp_customize->add_control( 'sdm_edd_store_archives_title', array(
-			'label'		=> __( 'Store Front Main Title', 'sdm' ),
-			'section'	=> 'sdm_edd_options',
-			'settings'	=> 'sdm_edd_store_archives_title',
+		$wp_customize->add_control( new EDDS_WP_Customize_Text_Control( $wp_customize, 'edds_edd_store_archives_title', array(
+			'label'		=> __( 'Store Front Main Title', 'edds' ),
+			'section'	=> 'edds_edd_options',
+			'settings'	=> 'edds_edd_store_archives_title',
 			'priority'	=> 20,
-		) );
+		) ) );
 		// store front/downloads archive description
-		$wp_customize->add_setting( 'sdm_edd_store_archives_description', array( 'default' => null ) );
-		$wp_customize->add_control( new sdm_customize_textarea_control( $wp_customize, 'sdm_edd_store_archives_description', array(
-			'label'		=> __( 'Store Front Description', 'sdm' ),
-			'section'	=> 'sdm_edd_options',
-			'settings'	=> 'sdm_edd_store_archives_description',
+		$wp_customize->add_setting( 'edds_edd_store_archives_description', array( 'default' => null ) );
+		$wp_customize->add_control( new EDDS_Customize_Textarea_Control( $wp_customize, 'edds_edd_store_archives_description', array(
+			'label'		=> __( 'Store Front Description', 'edds' ),
+			'section'	=> 'edds_edd_options',
+			'settings'	=> 'edds_edd_store_archives_description',
 			'priority'	=> 30,
 		) ) );
 		// hide download description (excerpt)?
-		$wp_customize->add_setting( 'sdm_download_description', array( 
+		$wp_customize->add_setting( 'edds_download_description', array( 
 			'default' => 0,
-			'sanitize_callback' => 'sdm_sanitize_checkbox'  
+			'sanitize_callback' => 'edds_sanitize_checkbox'  
 		) );
-		$wp_customize->add_control( 'sdm_download_description', array(
-			'label'		=> __( 'Hide Download Description', 'sdm' ),
-			'section'	=> 'sdm_edd_options',
+		$wp_customize->add_control( 'edds_download_description', array(
+			'label'		=> __( 'Hide Download Description & Link', 'edds' ),
+			'section'	=> 'edds_edd_options',
 			'priority'	=> 40,
 			'type'      => 'checkbox',
 		) );
 		//  view details link
-		$wp_customize->get_setting( 'sdm_product_view_details' )->transport = 'postMessage';
-		$wp_customize->add_setting( 'sdm_product_view_details', array( 
-			'default' => __( 'View Details', 'sdm' ),
-			'sanitize_callback' => 'sdm_sanitize_text' 
+		$wp_customize->get_setting( 'edds_product_view_details' )->transport = 'postMessage';
+		$wp_customize->add_setting( 'edds_product_view_details', array( 
+			'default' => __( 'View Details', 'edds' ),
+			'sanitize_callback' => 'edds_sanitize_text' 
 		) );
-		$wp_customize->add_control( 'sdm_product_view_details', array(
-		    'label' 	=> __( 'Store Item Link Text', 'sdm' ),
-		    'section' 	=> 'sdm_edd_options',
-			'settings' 	=> 'sdm_product_view_details',
+		$wp_customize->add_control( new EDDS_WP_Customize_Text_Control( $wp_customize, 'edds_product_view_details', array(
+		    'label' 	=> __( 'Store Item Link Text', 'edds' ),
+		    'section' 	=> 'edds_edd_options',
+			'settings' 	=> 'edds_product_view_details',
 			'priority'	=> 50,
-		) );
+		) ) );
 		// store front/archive item count
-		$wp_customize->add_setting( 'sdm_store_front_count', array( 'default' => 9 ) );		
-		$wp_customize->add_control( 'sdm_store_front_count', array(
-		    'label' 	=> __( 'Store Front Item Count', 'sdm' ),
-		    'section' 	=> 'sdm_edd_options',
-			'settings' 	=> 'sdm_store_front_count',
+		$wp_customize->add_setting( 'edds_store_front_count', array(
+			'default' => 8
+		) );		
+		$wp_customize->add_control( new EDDS_WP_Customize_Text_Control( $wp_customize, 'edds_store_front_count', array(
+		    'label' 	=> __( 'Store Front/Categories/Tags Item Count', 'edds' ),
+		    'section' 	=> 'edds_edd_options',
+			'settings' 	=> 'edds_store_front_count',
 			'priority'	=> 60,
-		) );
+		) ) );
 	}
 	
 
@@ -229,7 +237,7 @@ function sdm_customize_register( $wp_customize ) {
 	 * Navigation Menu(s)
 	 */
 	// section adjustments
-	$wp_customize->get_section( 'nav' )->title = __( 'Navigation Menu(s)', 'sdm' );
+	$wp_customize->get_section( 'nav' )->title = __( 'Navigation Menu(s)', 'edds' );
 	$wp_customize->get_section( 'nav' )->priority = 40;
 	
 	
@@ -240,13 +248,13 @@ function sdm_customize_register( $wp_customize ) {
 	// section adjustments
 	$wp_customize->get_section( 'static_front_page' )->priority = 50;
 }
-add_action( 'customize_register', 'sdm_customize_register' );
+add_action( 'customize_register', 'edds_customize_register' );
 
 
 /** ===============
  * Sanitize checkbox options
  */
-function sdm_sanitize_checkbox( $input ) {
+function edds_sanitize_checkbox( $input ) {
     if ( $input == 1 ) {
         return 1;
     } else {
@@ -256,51 +264,106 @@ function sdm_sanitize_checkbox( $input ) {
 
 
 /** ===============
- * Sanitize radio options
+ * Sanitize text input
  */
-function sdm_sanitize_radio( $input ) {
-    $valid = array(
-		'excerpt'		=> 'Excerpt',
-		'full_content'	=> 'Full Content'
-    );
- 
-    if ( array_key_exists( $input, $valid ) ) {
-        return $input;
-    } else {
-        return '';
-    }
+function edds_sanitize_text( $input ) {
+    return strip_tags( stripslashes( $input ) );
 }
 
 
 /** ===============
- * Sanitize text input
+ * Sanitize textarea
  */
-function sdm_sanitize_text( $input ) {
-    return strip_tags( stripslashes( $input ) );
+function edds_sanitize_textarea( $input ) {
+	$allowed = array(
+		's'			=> array(),
+		'br'		=> array(),
+		'em'		=> array(),
+		'i'			=> array(),
+		'strong'	=> array(),
+		'b'			=> array(),
+		'a'			=> array(
+			'href'			=> array(),
+			'title'			=> array(),
+			'class'			=> array(),
+			'id'			=> array(),
+			'style'			=> array(),
+		),
+		'form'		=> array(
+			'id'			=> array(),
+			'class'			=> array(),
+			'action'		=> array(),
+			'method'		=> array(),
+			'autocomplete'	=> array(),
+			'style'			=> array(),
+		),
+		'input'		=> array(
+			'type'			=> array(),
+			'name'			=> array(),
+			'class' 		=> array(),
+			'id'			=> array(),
+			'value'			=> array(),
+			'placeholder'	=> array(),
+			'tabindex'		=> array(),
+			'style'			=> array(),
+		),
+		'img'		=> array(
+			'src'			=> array(),
+			'alt'			=> array(),
+			'class'			=> array(),
+			'id'			=> array(),
+			'style'			=> array(),
+			'height'		=> array(),
+			'width'			=> array(),
+		),
+		'span'		=> array(
+			'class'			=> array(),
+			'id'			=> array(),
+			'style'			=> array(),
+		),
+		'p'			=> array(
+			'class'			=> array(),
+			'id'			=> array(),
+			'style'			=> array(),
+		),
+		'div'		=> array(
+			'class'			=> array(),
+			'id'			=> array(),
+			'style'			=> array(),
+		),
+		'blockquote' => array(
+			'cite'			=> array(),
+			'class'			=> array(),
+			'id'			=> array(),
+			'style'			=> array(),
+		),
+	);
+    return wp_kses( $input, $allowed );
 }
 
 
 /** ===============
  * Add Customizer UI styles to the <head> only on Customizer page
  */
-function sdm_customizer_styles() { ?>
+function edds_customizer_styles() { ?>
 	<style type="text/css">
 		body { background: #fff; }
 		#customize-controls #customize-theme-controls .description { display: block; color: #999; margin: 2px 0 15px; font-style: italic; }
 		textarea, input, select, .customize-description { font-size: 12px !important; }
 		.customize-control-title { font-size: 13px !important; margin: 10px 0 3px !important; }
 		.customize-control label { font-size: 12px !important; }
-		#customize-control-sdm_read_more { margin-bottom: 30px; }
-		#customize-control-sdm_store_front_count input { width: 50px; }
+		#customize-control-edds_read_more { margin-bottom: 30px; }
+		#customize-control-edds_store_front_count input { width: 50px; }
+		.control-description { color: #999; font-style: italic; margin-bottom: 6px; }
 	</style>
 <?php }
-add_action('customize_controls_print_styles', 'sdm_customizer_styles');
+add_action( 'customize_controls_print_styles', 'edds_customizer_styles' );
 
 
-/**
+/** ===============
  * Binds JS handlers to make Theme Customizer preview reload changes asynchronously.
  */
-function sdm_customize_preview_js() {
-	wp_enqueue_script( 'sdm_customizer', get_template_directory_uri() . '/inc/js/customizer.js', array( 'customize-preview' ), '20130508', true );
+function edds_customize_preview_js() {
+	wp_enqueue_script( 'edds_customizer', get_template_directory_uri() . '/inc/js/customizer.js', array( 'customize-preview' ), THEME_VERSION, true );
 }
-add_action( 'customize_preview_init', 'sdm_customize_preview_js' );
+add_action( 'customize_preview_init', 'edds_customize_preview_js' );

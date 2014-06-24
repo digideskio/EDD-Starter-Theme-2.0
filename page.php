@@ -19,7 +19,7 @@ get_header(); ?>
 
 				<?php
 					// only allow comments if chosen in theme customizer
-					if ( get_theme_mod( 'sdm_page_comments' ) == 1 ) :
+					if ( get_theme_mod( 'edds_page_comments' ) == 1 ) :
 					
 						// if comments are open or we have at least one comment, load up the comment template
 						if ( comments_open() || '0' != get_comments_number() ) :

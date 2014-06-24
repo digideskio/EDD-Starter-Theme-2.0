@@ -14,5 +14,4 @@
 		<?php echo do_shortcode( '[purchase_history]' ); ?>		
 		<?php echo do_shortcode( '[edd_profile_editor]' ); ?>
 	</div>
-	<?php edit_post_link( __( 'Edit', 'sdm' ), '<footer class="entry-meta"><span class="edit-link">', '</span></footer>' ); ?>
 </article>

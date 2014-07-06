@@ -795,14 +795,15 @@ object {
 
 
 /*--------------------------------------------------------------
-*** Easy Digital Downloads
+*** Easy Digital Downloads & Extensions
 --------------------------------------------------------------*/
 /* Page Templates */
 .edd-checkout-template #edd_checkout_form_wrap,
 .edd-history-template #content,
 .edd-confirmation-template #content,
 .edd-members-template #content,
-.edd-failed-template #content {
+.edd-failed-template #content,
+.fes-dashboard-template #content {
 	margin: 0 auto;
 	max-width: 700px;
 }
@@ -907,6 +908,151 @@ table#edd_purchase_receipt_products li {
 .product-info {
 	font-size: 13px;
 }
+
+/* FES General */
+.fes-vendor-menu {
+	background: #f5f5f5;
+	border: 1px solid #e2e2e2;
+	margin-bottom: 0;
+}
+.fes-vendor-menu > ul > li > a {
+	padding: 8px 10px;
+}
+.fes-vendor-menu [class*=" icon-"],
+.fes-vendor-menu [class^=icon-] {
+	margin-right: 0;
+}
+.fes-form {
+	border: 1px solid #e2e2e2;
+	border-width: 0 1px 1px;
+}
+.fes-headers {
+	padding: 8px 10px;
+	border: 1px solid #e2e2e2;
+	border-width: 0 1px 1px;
+	margin-bottom: 0;
+}
+.fes-table {
+	font-size: 12px;
+	border: 1px solid #e2e2e2;
+	border-width: 0 1px 1px;
+	margin-bottom: 0;
+}
+.fes-table thead tr {
+	background: #f5f5f5;
+}
+.fes-table thead th {
+	padding: 8px 10px;
+	border-bottom: 1px solid #e2e2e2;
+}
+.fes-table tbody td {
+	padding: 8px 10px;
+}
+.fes-table tbody tr:not(:last-child) td {
+	border-bottom: 1px solid #e2e2e2;
+}
+.fes-table tbody td:not(:last-child) {
+	border-right: 1px solid #e2e2e2;
+}
+.fes-form .fes-el {
+	padding: 16px 10px 30px;
+	margin-bottom: 0;
+}
+.fes-form .fes-submit {
+	padding: 16px 10px;
+	margin-bottom: 0;
+}
+.fes-form .fes-el:not(:last-child) {
+	border-bottom: 1px solid #e2e2e2;
+}
+.fes-form fieldset.fes-el #wp-post_content-wrap {
+	border: none;
+}
+.fes-form fieldset #wp-post_content-editor-container,
+.fes-form fieldset #wp-description-editor-container,
+.fes-form fieldset #wp-textarea-editor-container {
+	border: 1px solid #e2e2e2;
+}
+.fes-form .fes-label label {
+	display: block;
+	font-weight: bold;
+	margin-bottom: 6px;
+}
+.fes-form fieldset.fes-el .fes-label .fes-help {
+	color: #999;
+	margin: 0 0 10px;
+}
+.fes-form .fes-el.radio label,
+.fes-form .fes-el.checkbox label {
+	display: block;
+}
+.fes-form .fes-el .fes-section-wrap {
+	border: none;
+	margin: 0;
+}
+.edd-required-indicator {
+	color: #B94A48;
+}
+.fes-form .fes-el .fes-fields textarea {
+	padding: 6px;
+	width: 100%;
+}
+
+/* FES dashboard */
+#fes-vendor-dashboard {
+	background: #fff;
+	padding: 20px 10px 8px;
+	border: 1px solid #e2e2e2;
+	border-width: 0 1px 1px;
+}
+#fes-vendor-announcements {
+	margin-bottom: 1.5em;
+}
+table#fes-comments-table {
+	border-bottom: none;
+}
+table#fes-comments-table td,
+table#fes-comments-table th {
+	padding: 8px 0;
+}
+table#fes-comments-table tbody tr:not(:first-child) td {
+	padding-top: 20px;
+}
+#fes-comments-table .col-content {
+	padding-left: 20px;
+}
+.col-author {
+	font-size: 12px;
+}
+.col-author .fes-author-img {
+	padding-right: 0;
+	margin-bottom: 0;
+}
+#fes-comment-author {
+	font-weight: bold;
+}
+#fes-product-name b {
+	display: block;
+}
+.fes-cmt-submit-form,
+.fes-ignore {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+/* FES Products */
+.fes-product-list-pagination-container {
+	margin-top: 30px;
+}
+
+/* FES Add Product */
+
+/* FES Orders */
+#fes-order-list thead tr {
+	background: #f5f5f5;
+}
+
+/* FES Profile */
 
 
 /*--------------------------------------------------------------
